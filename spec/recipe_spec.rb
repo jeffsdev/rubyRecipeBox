@@ -6,6 +6,13 @@ describe(Recipe) do
     expect(test_recipe.save).to(eq(false))
   end
 
+  describe('#capitalize') do
+    it ('capitalizes the name before save') do
+      test_recipe = create_test_recipe
+      expect(test_recipe.name()).to(eq("Test Recipe"))
+    end
+  end
+
   describe('#ingredients') do
     it('returns a list of ingredients used in the recipe') do
       test_recipe = create_test_recipe()

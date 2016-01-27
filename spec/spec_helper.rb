@@ -26,7 +26,7 @@ RSpec.configure do |config|
 end
 
 def create_test_recipe
-  Recipe.create({name: "Test Recipe"})
+  Recipe.create({name: "test recipe"})
 end
 
 def create_test_ingredient
