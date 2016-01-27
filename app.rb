@@ -25,9 +25,10 @@ post('/recipes') do
     params[:ingredient_count].to_i.times do |count|
       ingredient_number = "ingredient" << (count + 1).to_s
       new_ingredient_name = params.fetch(ingredient_number)
-      new_ingredient = new_recipe.ingredients.new(name: new_ingredient_name)
+      new_ingredient = Ingredient.new(name: new_ingredient_name)
 
       if new_ingredient.save
+        new_recipe.ingredients << new_ingredient
         redirect("/recipes/#{new_recipe.id}")
       else
         @task = new_ingredient

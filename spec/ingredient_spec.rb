@@ -1,6 +1,11 @@
 require "spec_helper"
 
 describe(Ingredient) do
+  it('validates the presence of the name') do
+    test_ingredient = Ingredient.new(name: "")
+    expect(test_ingredient.save).to(eq(false))
+  end
+
   it('validates the uniqueness of the name of the ingredient') do
     test_ingredient = create_test_ingredient
     second_ingredient_with_same_name = Ingredient.new({name: "test ingredient"})
