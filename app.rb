@@ -13,6 +13,7 @@ post('/recipes') do
 
   if new_recipe.save
 
+    # Add any ingredients with existing records to the recipe
     existing_ingredients = params[:ingredient_ids].to_a
     if existing_ingredients.any?
       existing_ingredients.each do |ingredient_id|
@@ -20,13 +21,20 @@ post('/recipes') do
       end
     end
 
+    # Create new ingredients for any new inputs from the user
     params[:ingredient_count].to_i.times do |count|
       ingredient_number = "ingredient" << (count + 1).to_s
       new_ingredient_name = params.fetch(ingredient_number)
-      new_recipe.ingredients.create(name: new_ingredient_name)
-    end
+      new_ingredient = new_recipe.ingredients.new(name: new_ingredient_name)
 
-    redirect("/recipes/#{new_recipe.id}")
+      if new_ingredient.save
+        redirect("/recipes/#{new_recipe.id}")
+      else
+        @task = new_ingredient
+        @page = "/recipes/#{new_recipe.id}"
+        return erb(:errors)
+      end
+    end
   else
     @task = new_recipe
     @page = '/recipes/new'
