@@ -1,7 +1,34 @@
-<form class="form-inline" action="/recipes" method="post">
+<form action="/recipes" method="post">
+  <!-- Recipe Name -->
   <div class="form-group">
-    <label for="recipe_name">Add Recipe:</label>
+    <label for="recipe_name">Add Recipe</label>
     <input type="text" class="form-control" name="recipe_name" placeholder="Enter recipe name">
   </div>
-  <button type="submit" class="btn btn-primary">Create</button>
+
+  <!-- Recipe Ingredients -->
+  <!-- Checkboxes to add existing ingredients to the recipe -->
+  <div class="form-group">
+    <label for="ingredient">Select Ingredients</label>
+    <div>
+      <% @ingredients.each() do |ingredient| %>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="ingredient_ids[]" value="<%= ingredient.id() %>"><%= ingredient.name() %>
+          </label>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div id="new-ingredients">
+    <input hidden id="ingredient_count" name="ingredient_count" value="0">
+  </div>
+
+  <div class="form-group">
+    <button class="btn btn-default" type="button" id="add-ingredient">+</button>
+  </div>
+  <!-- Submit Button -->
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary">Create</button>
+  </div>
 </form>
