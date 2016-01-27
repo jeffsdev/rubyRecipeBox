@@ -32,3 +32,7 @@ end
 def create_test_ingredient
   Ingredient.create({name: "test ingredient"})
 end
+
+def create_test_tag
+  Tag.create({name: "test tag"})
+end

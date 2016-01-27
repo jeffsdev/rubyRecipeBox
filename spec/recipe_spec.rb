@@ -1,6 +1,11 @@
 require "spec_helper"
 
 describe(Recipe) do
+  it('validates the presence of the name') do
+    test_recipe = Recipe.new(name: "")
+    expect(test_recipe.save).to(eq(false))
+  end
+
   describe('#ingredients') do
     it('returns a list of ingredients used in the recipe') do
       test_recipe = create_test_recipe()
