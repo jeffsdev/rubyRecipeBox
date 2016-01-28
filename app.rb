@@ -9,6 +9,7 @@ get('/') do
   recipes_no_rating = Recipe.where('rating IS NULL').order(:name)
   @recipes = recipes_rated + recipes_no_rating
   @ingredients = Ingredient.order(:name)
+  @tags = Tag.order(:name)
   erb(:index)
 end
 
@@ -95,6 +96,12 @@ get('/ingredients/:id') do
   @ingredient = Ingredient.find(params[:id])
   @recipes = @ingredient.recipes
   erb(:ingredient)
+end
+
+get('/tags/:id') do
+  @tag = Tag.find(params[:id])
+  @recipes = @tag.recipes
+  erb(:tag)
 end
 
 helpers do

@@ -36,4 +36,20 @@
       </ul>
     <% end %>
   </div>
+
+  <!-- List tags -->
+  <div class="col-sm-4">
+    <h5>Featured Tags</h5>
+    <% if @tags.any? %>
+      <ul class="nav nav-pills nav-stacked">
+        <% @tags.each do |tag| %>
+          <li>
+            <a href="/tags/<%= tag.id %>">
+              <%= tag.name %>
+            </a>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
 </div>
