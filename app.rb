@@ -9,14 +9,16 @@ get('/') do
 end
 
 post('/recipes') do
-  new_recipe = Recipe.new(name: params[:recipe_name])
+  new_recipe = Recipe.new({
+    name: params[:recipe_name],
+    instructions: params[:instructions]
+    })
 
   if new_recipe.save
-    number_of_existing = params[:existing_ingredient_count].to_i
-    number_of_new = params[:new_ingredient_count].to_i
-
     # Add new ingredients with quantities
-    number_of_existing.times do |count|
+    number_of_existing_ingredients = params[:existing_ingredient_count].to_i
+
+    number_of_existing_ingredients.times do |count|
       param_number = (count + 1).to_s
       existing_ingredient_id = params.fetch("ingredient_existing" << param_number)
       quantity = params.fetch("quantity_existing" << param_number)
@@ -29,7 +31,9 @@ post('/recipes') do
     end
 
     # Create new ingredients for any new inputs from the user
-    number_of_new.times do |count|
+    number_of_new_ingredients = params[:new_ingredient_count].to_i
+
+    number_of_new_ingredients.times do |count|
       param_number = (count + 1).to_s
       new_ingredient_name = params.fetch("ingredient_new" << param_number)
       new_ingredient = Ingredient.new(name: new_ingredient_name)
@@ -63,5 +67,7 @@ end
 
 get('/recipes/:id') do
   @recipe = Recipe.find(params[:id])
+  @quantities = @recipe.quantities
+  @instructions = @recipe.instructions
   erb(:recipe)
 end

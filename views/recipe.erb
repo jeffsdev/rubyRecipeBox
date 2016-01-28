@@ -1,9 +1,13 @@
 <h1><%= @recipe.name %></h1>
 
 <ul>
-  <% @recipe.quantities.each do |quantity| %>
+  <% @quantities.each do |quantity| %>
     <li>
       <%= quantity.description %> <%= quantity.ingredient.name %>
     </li>
   <% end %>
 </ul>
+
+<p>
+  <%= @instructions %>
+</p>
