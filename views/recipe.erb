@@ -1,12 +1,14 @@
 <h1><%= @recipe.name %></h1>
 
-<ul>
-  <% @quantities.each do |quantity| %>
-    <li>
-      <%= quantity.description %> <%= quantity.ingredient.name %>
-    </li>
-  <% end %>
-</ul>
+<% if @quantities.any? %>
+  <ul>
+    <% @quantities.each do |quantity| %>
+      <li>
+        <%= quantity.description %> <%= quantity.ingredient.name %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
 
 <p>
   <%= @instructions %>
