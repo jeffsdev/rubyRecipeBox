@@ -1,0 +1,88 @@
+<form action="/recipes" method="post">
+  <div class="row">
+    <!-- Recipe Name -->
+    <div class="form-group col-sm-6">
+      <label for="recipe_name">Update Recipe Name</label>
+      <input type="text" class="form-control" name="recipe_name" value="<%= @recipe.name %>">
+    </div>
+
+    <!-- Recipe Tags -->
+    <div class="col-sm-6">
+      <div class="form-group">
+        <label for="tags">Edit Tags</label>
+        <input type="text" class="form-control" name="tags" value="<%= @tags %>">
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6 form-group">
+      <label for="rating">Change Rating</label>
+      <select id="rating" class="form-control" name="rating">
+        <option><%= @recipe.rating %> stars</option>
+        <option value="1">
+          1 star
+        </option>
+        <option value="2">
+          2 stars
+        </option>
+        <option value="3">
+          3 stars
+        </option>
+        <option value="4">
+          4 stars
+        </option>
+        <option value="5">
+          5 stars
+        </option>
+      </select>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <!-- Recipe Ingredients -->
+    <div class="col-sm-6">
+      <!-- Checkboxes to add existing ingredients to the recipe -->
+      <div class="form-group">
+        <label for="existing-ingredients">Change Ingredients</label>
+        <select name="existing-ingredients" id="add-existing-ingredient" class="form-control">
+          <option>Add ingredients:</option>
+          <% @ingredients.each() do |ingredient| %>
+            <option value="<%= ingredient.id() %>">
+              <%= ingredient.name() %>
+            </option>
+          <% end %>
+        </select>
+      </div>
+
+      <div id="new-ingredients">
+        <% if @quantities.any? %>
+          <% @quantities.each do |quantity| %>
+            <div class="form-group form-inline">
+              <input class="form-control qty-box" name="<%= quantity.id %>" value="<%= quantity.description %>">
+              <label for="<%= quantity.id %>"><%= quantity.ingredient.name %></label>
+            </div>
+          <% end %>
+        <% end %>
+        <input hidden id="new_ingredient_count" name="new_ingredient_count" value="0">
+        <input hidden id="existing_ingredient_count" name="existing_ingredient_count" value="0">
+      </div>
+
+      <div class="form-group">
+        <button class="btn btn-default" type="button" id="add-new-ingredient">+</button>
+      </div>
+
+    </div>
+
+    <div class="col-sm-6 form-group">
+      <label for="instructions">Instructions</label>
+      <textarea class="form-control" name="instructions" rows="8"><%= @instructions %></textarea>
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary" name="_method" value="patch">Update</button>
+  </div>
+</form>

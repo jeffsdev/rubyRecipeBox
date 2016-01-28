@@ -5,8 +5,10 @@ Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
 
 
 get('/') do
-  @recipes = Recipe.all
-  @ingredients = Ingredient.all
+  recipes_rated = Recipe.where('rating IS NOT NULL').order(rating: :desc).order(:name)
+  recipes_no_rating = Recipe.where('rating IS NULL').order(:name)
+  @recipes = recipes_rated + recipes_no_rating
+  @ingredients = Ingredient.order(:name)
   erb(:index)
 end
 
@@ -79,7 +81,7 @@ post('/recipes') do
 end
 
 get('/recipes/new') do
-  @ingredients = Ingredient.all
+  @ingredients = Ingredient.order(:name)
   erb(:recipe_form)
 end
 
@@ -90,6 +92,23 @@ get('/recipes/:id') do
   @instructions = @recipe.instructions
   @rating = @recipe.rating
   erb(:recipe)
+end
+
+get('/recipes/:id/edit') do
+  @ingredients = Ingredient.order(:name)
+  @recipe = Recipe.find(params[:id])
+  @quantities = @recipe.quantities
+  @instructions = @recipe.instructions
+  @rating = @recipe.rating
+
+  tag_objects = @recipe.tags
+  @tags = []
+  tag_objects.each() do |tag|
+    @tags << tag.name
+  end
+  @tags = @tags.join(', ')
+
+  erb(:recipe_update_form)
 end
 
 get('/ingredients/:id') do
