@@ -1,0 +1,19 @@
+<h1><%= @ingredient.name %></h1>
+
+<div class="row">
+  <!-- List recipes -->
+  <div class="col-sm-4">
+    <h5>Featured Recipes</h5>
+    <% if @recipes.any? %>
+      <ul class="nav nav-pills nav-stacked">
+        <% @recipes.each do |recipe| %>
+          <li>
+            <a href="/recipes/<%= recipe.id %>">
+              <%= recipe.name %>
+            </a>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+</div>

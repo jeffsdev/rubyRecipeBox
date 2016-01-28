@@ -1,13 +1,39 @@
-<a href="/recipes/new">Add a New Recipe</a>
+<div class="row">
+  <div class="col-sm-12">
+    <a href="/recipes/new">Add a New Recipe</a>
+  </div>
+</div>
 
-<% if @recipes.any? %>
-  <ul>
-    <% @recipes.each do |recipe| %>
-      <li>
-        <a href="/recipes/<%= recipe.id %>">
-          <%= recipe.name %>
-        </a>
-      </li>
+<div class="row">
+  <!-- List recipes -->
+  <div class="col-sm-4">
+    <h5>Featured Recipes</h5>
+    <% if @recipes.any? %>
+      <ul class="nav nav-pills nav-stacked">
+        <% @recipes.each do |recipe| %>
+          <li>
+            <a href="/recipes/<%= recipe.id %>">
+              <%= recipe.name %>
+            </a>
+          </li>
+        <% end %>
+      </ul>
     <% end %>
-  </ul>
-<% end %>
+  </div>
+
+  <!-- List ingredients -->
+  <div class="col-sm-4">
+    <h5>Featured Ingredients</h5>
+    <% if @ingredients.any? %>
+      <ul class="nav nav-pills nav-stacked">
+        <% @ingredients.each do |ingredient| %>
+          <li>
+            <a href="/ingredients/<%= ingredient.id %>">
+              <%= ingredient.name %>
+            </a>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+</div>

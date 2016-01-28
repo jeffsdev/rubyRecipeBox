@@ -6,6 +6,7 @@ Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
 
 get('/') do
   @recipes = Recipe.all
+  @ingredients = Ingredient.all
   erb(:index)
 end
 
@@ -89,4 +90,10 @@ get('/recipes/:id') do
   @instructions = @recipe.instructions
   @rating = @recipe.rating
   erb(:recipe)
+end
+
+get('/ingredients/:id') do
+  @ingredient = Ingredient.find(params[:id])
+  @recipes = @ingredient.recipes
+  erb(:ingredient)
 end
