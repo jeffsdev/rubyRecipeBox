@@ -1,40 +1,55 @@
-<h1><%= @recipe.name %></h1>
-<% if @tags.any? %>
-  <ul class="nav nav-pills">
-    <% @tags.each do |tag| %>
-      <li>
-        <%= tag.name %>
-      </li>
+<div class="row">
+  <div class="col-sm-12">
+    <h1><%= @recipe.name %></h1>
+
+    <% if @tags.any? %>
+      <ul class="nav nav-pills">
+        <% @tags.each do |tag| %>
+          <li>
+            <a href="/tags/<%= tag.id %>"><%= tag.name %></a>
+          </li>
+        <% end %>
+      </ul>
     <% end %>
-  </ul>
-<% end %>
+  </div>
+</div>
 
-<% unless @rating.nil? %>
-  <h5>Rating: </h5>
-  <p>
-    <% @rating.times do %>
-      <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+<div class="row">
+  <div class="col-sm-6">
+    <% unless @rating.nil? %>
+      <h5>Rating: </h5>
+      <p>
+        <% @rating.times do %>
+          <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+        <% end %>
+      </p>
     <% end %>
-  </p>
-<% end %>
 
-
-<% if @quantities.any? %>
-  <h5>Ingredients:</h5>
-  <ul>
-    <% @quantities.each do |quantity| %>
-      <li>
-        <%= quantity.description %> <%= quantity.ingredient.name %>
-      </li>
+    <% if @quantities.any? %>
+      <h5>Ingredients:</h5>
+      <ul>
+        <% @quantities.each do |quantity| %>
+          <li>
+            <%= quantity.description %> <%= quantity.ingredient.name %>
+          </li>
+        <% end %>
+      </ul>
     <% end %>
-  </ul>
-<% end %>
+  </div>
+  <div class="col-sm-6">
+    <% if @instructions.length > 0 %>
+      <h5>Instructions:</h5>
+      <p>
+        <%= @instructions %>
+      </p>
+    <% end %>
+  </div>
+</div>
 
-<% if @instructions.length > 0 %>
-  <h5>Instructions:</h5>
-  <p>
-    <%= @instructions %>
-  </p>
-<% end %>
-
-<a href="/recipes/<%= @recipe.id %>/edit">Edit</a>
+<div class="row">
+  <div class="col-sm-12">
+    <a href="/recipes/<%= @recipe.id %>/edit">
+      <button class="btn btn-default">Edit</button>
+    </a>
+  </div>
+</div>
