@@ -72,7 +72,7 @@ post('/recipes') do
     if tag_match.nil?
       new_tag = new_recipe.tags.create(name: tag)
     else
-      new_recipes.tags << tag_match
+      new_recipe.tags << tag_match
     end
   end
 
