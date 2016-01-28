@@ -75,6 +75,18 @@ patch('/recipes/:id') do
   redirect("/recipes/#{id}")
 end
 
+delete('/recipes/:id') do
+  id = params[:id]
+  recipe = Recipe.find(id)
+
+  # Delete name, instructions, rating
+  recipe.tags.delete
+  recipe.ingredients.delete
+  recipe.destroy
+
+  redirect("/")
+end
+
 get('/recipes/:id/edit') do
   @ingredients = Ingredient.order(:name)
   @recipe = Recipe.find(params[:id])
