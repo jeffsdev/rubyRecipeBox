@@ -25,57 +25,13 @@ post('/recipes') do
     return erb(:errors)
   end
 
-  # Add new ingredients with quantities
-  number_of_existing_ingredients = params[:existing_ingredient_count].to_i
-
-  if number_of_existing_ingredients > 0
-    number_of_existing_ingredients.times do |count|
-      param_number = (count + 1).to_s
-      existing_ingredient_id = params.fetch("ingredient_existing" << param_number)
-      quantity = params.fetch("quantity_existing" << param_number)
-
-      Quantity.create({
-        ingredient_id: existing_ingredient_id,
-        recipe_id: new_recipe.id,
-        description: quantity
-        })
-    end
-  end
-
-  # Create new ingredients for any new inputs from the user
-  number_of_new_ingredients = params[:new_ingredient_count].to_i
-
-  number_of_new_ingredients.times do |count|
-    param_number = (count + 1).to_s
-    new_ingredient_name = params.fetch("ingredient_new" << param_number)
-    quantity = params.fetch("quantity_new" << param_number)
-
-    existing_ingredient_match = Ingredient.find_by(name: new_ingredient_name)
-    if existing_ingredient_match.nil?
-      new_ingredient = Ingredient.create(name: new_ingredient_name)
-    else
-      new_ingredient = existing_ingredient_match
-    end
-
-    unless new_ingredient.id.nil?
-      Quantity.create({
-        ingredient_id: new_ingredient.id,
-        recipe_id: new_recipe.id,
-        description: quantity
-        })
-    end
-  end
+  # Add ingredients
+  add_existing_ingredients(new_recipe, params)
+  add_new_ingredients(new_recipe, params)
 
   # Add recipe tags
-  tags = params[:tags].split(', ')
-  tags.each do |tag|
-    tag_match = Tag.find_by(name: tag)
-    if tag_match.nil?
-      new_tag = new_recipe.tags.create(name: tag)
-    else
-      new_recipe.tags << tag_match
-    end
-  end
+  tag_string = params[:tags]
+  new_recipe.tag_string_to_tags(tag_string)
 
   redirect("/recipes/#{new_recipe.id}")
 end
@@ -92,6 +48,30 @@ get('/recipes/:id') do
   @instructions = @recipe.instructions
   @rating = @recipe.rating
   erb(:recipe)
+end
+
+patch('/recipes/:id') do
+  id = params[:id]
+  recipe = Recipe.find(id)
+
+  # Update name, instructions, rating
+  recipe.update({
+    name: params[:recipe_name],
+    instructions: params[:instructions],
+    rating: params[:rating]
+    })
+
+  # Update ingredients
+  recipe.ingredients.delete_all
+  add_existing_ingredients(recipe, params)
+  add_new_ingredients(recipe, params)
+
+  # Update tags
+  tag_string = params[:tags]
+  recipe.tags.delete_all
+  recipe.tag_string_to_tags(tag_string)
+
+  redirect("/recipes/#{id}")
 end
 
 get('/recipes/:id/edit') do
@@ -115,4 +95,48 @@ get('/ingredients/:id') do
   @ingredient = Ingredient.find(params[:id])
   @recipes = @ingredient.recipes
   erb(:ingredient)
+end
+
+helpers do
+  def add_existing_ingredients(recipe, params)
+    number_of_ingredients = params[:existing_ingredient_count].to_i
+    if number_of_ingredients > 0
+      number_of_ingredients.times do |count|
+        param_number = (count + 1).to_s
+        existing_ingredient_id = params.fetch("ingredient_existing" << param_number)
+        quantity = params.fetch("quantity_existing" << param_number)
+
+        Quantity.create({
+          ingredient_id: existing_ingredient_id,
+          recipe_id: recipe.id,
+          description: quantity
+          })
+      end
+    end
+  end
+
+  def add_new_ingredients(recipe, params)
+    number_of_ingredients = params[:new_ingredient_count].to_i
+
+    number_of_ingredients.times do |count|
+      param_number = (count + 1).to_s
+      new_ingredient_name = params.fetch("ingredient_new" << param_number)
+      quantity = params.fetch("quantity_new" << param_number)
+
+      existing_ingredient_match = Ingredient.find_by(name: new_ingredient_name)
+      if existing_ingredient_match.nil?
+        new_ingredient = Ingredient.create(name: new_ingredient_name)
+      else
+        new_ingredient = existing_ingredient_match
+      end
+
+      unless new_ingredient.id.nil?
+        Quantity.create({
+          ingredient_id: new_ingredient.id,
+          recipe_id: recipe.id,
+          description: quantity
+          })
+      end
+    end
+  end
 end

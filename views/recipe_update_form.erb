@@ -1,4 +1,4 @@
-<form action="/recipes" method="post">
+<form action="/recipes/<%= @recipe.id %>" method="post">
   <div class="row">
     <!-- Recipe Name -->
     <div class="form-group col-sm-6">
@@ -57,16 +57,20 @@
       </div>
 
       <div id="new-ingredients">
+        <% existing_quantity_count = 0 %>
         <% if @quantities.any? %>
           <% @quantities.each do |quantity| %>
-            <div class="form-group form-inline">
-              <input class="form-control qty-box" name="<%= quantity.id %>" value="<%= quantity.description %>">
-              <label for="<%= quantity.id %>"><%= quantity.ingredient.name %></label>
+            <div class="form-group form-inline existing_ingredient">
+              <input class="form-control qty-box" name="quantity_existing<%= existing_quantity_count + 1 %>" value="<%= quantity.description %>">
+              <input hidden class="new-ingredients-box" name="ingredient_existing<%= existing_quantity_count + 1 %>" value="<%= quantity.ingredient.id %>">
+              <label><%= quantity.ingredient.name %></label>
+              <% existing_quantity_count += 1 %>
             </div>
           <% end %>
         <% end %>
+
         <input hidden id="new_ingredient_count" name="new_ingredient_count" value="0">
-        <input hidden id="existing_ingredient_count" name="existing_ingredient_count" value="0">
+        <input hidden id="existing_ingredient_count" name="existing_ingredient_count" value="<%= existing_quantity_count %>">
       </div>
 
       <div class="form-group">

@@ -32,4 +32,16 @@ describe(Recipe) do
       expect(test_recipe.tags).to(eq([test_tag]))
     end
   end
+
+  describe('#tag_string_to_tags') do
+    it('takes a list of tags and adds each of them to a recipe') do
+      test_recipe = create_test_recipe
+      tag_1 = Tag.create({name: "tag 1"})
+      tag_2 = Tag.create({name: "tag 2"})
+      tag_3 = Tag.create({name: "tag 3"})
+      test_string = "#{tag_1.name}, #{tag_2.name}, #{tag_3.name}"
+      test_recipe.tag_string_to_tags(test_string)
+      expect(test_recipe.tags).to(eq([tag_1, tag_2, tag_3]))
+    end
+  end
 end

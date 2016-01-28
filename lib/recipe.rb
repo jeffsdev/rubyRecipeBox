@@ -7,6 +7,18 @@ class Recipe < ActiveRecord::Base
 
   before_save(:capitalize)
 
+  def tag_string_to_tags(tag_string)
+    tag_names = tag_string.split(', ')
+    tag_names.each do |tag_name|
+      tag_match = Tag.find_by(name: tag_name)
+      if tag_match.nil?
+        self.tags.create(name: tag_name)
+      else
+        self.tags << tag_match
+      end
+    end
+  end
+
 private
 
   def capitalize
