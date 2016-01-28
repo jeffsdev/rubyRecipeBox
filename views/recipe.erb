@@ -1,6 +1,17 @@
 <h1><%= @recipe.name %></h1>
+<% if @tags.any? %>
+  <ul class="nav nav-pills">
+    <% @tags.each do |tag| %>
+      <li>
+        <%= tag.name %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
 
 <% if @quantities.any? %>
+  <h5>Ingredients</h5>
   <ul>
     <% @quantities.each do |quantity| %>
       <li>
@@ -10,6 +21,9 @@
   </ul>
 <% end %>
 
-<p>
-  <%= @instructions %>
-</p>
+<% if @instructions.length > 0 %>
+  <h5>Instructions</h5>
+  <p>
+    <%= @instructions %>
+  </p>
+<% end %>

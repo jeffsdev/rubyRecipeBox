@@ -12,12 +12,13 @@ feature "Adding a recipe", :js => true do
     fill_in 'ingredient_new1', with: 'new ingredient'
     fill_in 'quantity_new1', with: '1 Tb'
     fill_in 'instructions', with: '1. Test instructionify.'
-    # fill_in 'tags', with: 'test tag, testfast'
+    fill_in 'tags', with: 'test tag, testfast'
     click_button 'Create'
     expect(page).to have_content('Test Recipe')
     expect(page).to have_content('1 tsp existing ingredient')
     expect(page).to have_content('1 Tb new ingredient')
     expect(page).to have_content('1. Test instructionify.')
-    # expect(page).to have_content('test tag, testfast')
+    expect(page).to have_content('test tag')
+    expect(page).to have_content('testfast')
   end
 end

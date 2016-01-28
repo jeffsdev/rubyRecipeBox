@@ -5,6 +5,7 @@ Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
 
 
 get('/') do
+  @recipes = Recipe.all
   erb(:index)
 end
 
@@ -49,8 +50,7 @@ post('/recipes') do
 
     existing_ingredient_match = Ingredient.find_by(name: new_ingredient_name)
     if existing_ingredient_match.nil?
-      new_ingredient = Ingredient.new(name: new_ingredient_name)
-      new_ingredient.save
+      new_ingredient = Ingredient.create(name: new_ingredient_name)
     else
       new_ingredient = existing_ingredient_match
     end
@@ -65,6 +65,16 @@ post('/recipes') do
   end
 
   # Add recipe tags
+  tags = params[:tags].split(', ')
+
+  tags.each do |tag|
+    tag_match = Tag.find_by(name: tag)
+    if tag_match.nil?
+      new_tag = new_recipe.tags.create(name: tag)
+    else
+      new_recipes.tags << tag_match
+    end
+  end
 
   redirect("/recipes/#{new_recipe.id}")
 end
@@ -76,6 +86,7 @@ end
 
 get('/recipes/:id') do
   @recipe = Recipe.find(params[:id])
+  @tags = @recipe.tags
   @quantities = @recipe.quantities
   @instructions = @recipe.instructions
   erb(:recipe)
