@@ -9,9 +9,18 @@
   </ul>
 <% end %>
 
+<% unless @rating.nil? %>
+  <h5>Rating: </h5>
+  <p>
+    <% @rating.times do %>
+      <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+    <% end %>
+  </p>
+<% end %>
+
 
 <% if @quantities.any? %>
-  <h5>Ingredients</h5>
+  <h5>Ingredients:</h5>
   <ul>
     <% @quantities.each do |quantity| %>
       <li>
@@ -22,7 +31,7 @@
 <% end %>
 
 <% if @instructions.length > 0 %>
-  <h5>Instructions</h5>
+  <h5>Instructions:</h5>
   <p>
     <%= @instructions %>
   </p>

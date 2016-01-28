@@ -12,12 +12,11 @@ end
 post('/recipes') do
   new_recipe = Recipe.new({
     name: params[:recipe_name],
-    instructions: params[:instructions]
+    instructions: params[:instructions],
+    rating: params[:rating]
     })
 
-  if new_recipe.save
-
-  else
+  unless new_recipe.save
     @task = new_recipe
     @page = '/recipes/new'
     return erb(:errors)
@@ -66,7 +65,6 @@ post('/recipes') do
 
   # Add recipe tags
   tags = params[:tags].split(', ')
-
   tags.each do |tag|
     tag_match = Tag.find_by(name: tag)
     if tag_match.nil?
@@ -89,5 +87,6 @@ get('/recipes/:id') do
   @tags = @recipe.tags
   @quantities = @recipe.quantities
   @instructions = @recipe.instructions
+  @rating = @recipe.rating
   erb(:recipe)
 end

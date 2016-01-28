@@ -13,6 +13,7 @@ feature "Adding a recipe", :js => true do
     fill_in 'quantity_new1', with: '1 Tb'
     fill_in 'instructions', with: '1. Test instructionify.'
     fill_in 'tags', with: 'test tag, testfast'
+    select '5 stars'
     click_button 'Create'
     expect(page).to have_content('Test Recipe')
     expect(page).to have_content('1 tsp existing ingredient')
@@ -20,5 +21,6 @@ feature "Adding a recipe", :js => true do
     expect(page).to have_content('1. Test instructionify.')
     expect(page).to have_content('test tag')
     expect(page).to have_content('testfast')
+    expect(page.has_css?('glyphicon-star', count: 5))
   end
 end
