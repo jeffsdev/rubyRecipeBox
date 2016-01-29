@@ -12,7 +12,8 @@ Clone repository.
 Run Postgres.  
 In terminal:
 
-```bundle install  
+```
+bundle install  
 rake db:create
 rake db:migrate  
 rake db:test:prepare
