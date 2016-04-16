@@ -1,4 +1,5 @@
 # Recipe Box
+### By Jeff Seymour, Krystan Menne
 
 ## Description
 ###### Ruby web app that stores recipes, including ingredients and tags.
